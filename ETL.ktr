@@ -452,11 +452,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>tempo</from>
-      <to>Sort rows</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows</from>
       <to>Join Origem Tempo</to>
       <enabled>Y</enabled>
@@ -464,11 +459,6 @@
     <hop>
       <from>Join Origem Tempo</from>
       <to>Casos Mensais</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>municipio</from>
-      <to>Ordena municipios</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -496,6 +486,46 @@
       <to>Merge join</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>tempo</from>
+      <to>Select values</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 2</from>
+      <to>Ordena municipios</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>municipio</from>
+      <to>Filtra Goias</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filtra Goias</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join</from>
+      <to>Formata data 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Formata data 2</from>
+      <to>Select values 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 3</from>
+      <to>Text file output</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Casos Mensais</name>
@@ -521,7 +551,7 @@
         <name>month_name</name>
       </field>
       <field>
-        <name>year4</name>
+        <name>year</name>
       </field>
       <field>
         <name>co_municipio_residencia_atual</name>
@@ -529,8 +559,8 @@
     </group>
     <fields>
       <field>
-        <aggregate>ï»¿nu_notificacao</aggregate>
-        <subject>ï»¿nu_notificacao</subject>
+        <aggregate>nu_notificacao</aggregate>
+        <subject>nu_notificacao</subject>
         <type>COUNT_ALL</type>
         <valuefield/>
       </field>
@@ -544,7 +574,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1024</xloc>
+      <xloc>944</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
@@ -565,18 +595,129 @@
     <compare>
       <condition>
         <negated>N</negated>
-        <leftvalue>dt_diagnostico_sintoma</leftvalue>
-        <function>&gt;=</function>
-        <rightvalue/>
-        <value>
-          <name>constant</name>
-          <type>Date</type>
-          <text>2021/01/01 00:00:00.000</text>
-          <length>-1</length>
-          <precision>-1</precision>
-          <isnull>N</isnull>
-          <mask>yyyyMMdd</mask>
-        </value>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>dt_diagnostico_sintoma</leftvalue>
+            <function>&gt;=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>Date</type>
+              <text>2021/01/01 00:00:00.000</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask>yyyyMMdd</mask>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <conditions>
+              <condition>
+                <negated>N</negated>
+                <leftvalue>tp_entrada</leftvalue>
+                <function>=</function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>1</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+              <condition>
+                <negated>N</negated>
+                <operator>OR</operator>
+                <leftvalue>tp_entrada</leftvalue>
+                <function>=</function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>6</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+              <condition>
+                <negated>N</negated>
+                <operator>OR</operator>
+                <leftvalue>tp_entrada</leftvalue>
+                <function>=</function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>4</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+            </conditions>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <conditions>
+              <condition>
+                <negated>N</negated>
+                <leftvalue>tp_forma</leftvalue>
+                <function>=</function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>1</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+              <condition>
+                <negated>N</negated>
+                <operator>OR</operator>
+                <leftvalue>tp_forma</leftvalue>
+                <function>=</function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>3</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+            </conditions>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <leftvalue>tp_situacao_encerramento</leftvalue>
+            <function>&lt;></function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>Integer</type>
+              <text>6</text>
+              <length>-1</length>
+              <precision>0</precision>
+              <isnull>N</isnull>
+              <mask>####0;-####0</mask>
+            </value>
+          </condition>
+        </conditions>
       </condition>
     </compare>
     <attributes/>
@@ -656,7 +797,7 @@
       <key>dt_diagnostico_sintoma</key>
     </keys_1>
     <keys_2>
-      <key>ï»¿dte_id</key>
+      <key>dte_id</key>
     </keys_2>
     <attributes/>
     <cluster_schema/>
@@ -667,7 +808,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>896</xloc>
+      <xloc>816</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
@@ -734,7 +875,7 @@
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>ï»¿dmun_codibge</name>
+        <name>dmun_codibge</name>
         <ascending>Y</ascending>
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>
@@ -921,33 +1062,43 @@
     <fields>
       <field>
         <name>ï»¿nu_notificacao</name>
+        <rename>nu_notificacao</rename>
       </field>
       <field>
         <name>tp_entrada</name>
+        <rename/>
       </field>
       <field>
         <name>tp_pop_liberdade</name>
+        <rename/>
       </field>
       <field>
         <name>tp_pop_rua</name>
+        <rename/>
       </field>
       <field>
         <name>tp_forma</name>
+        <rename/>
       </field>
       <field>
         <name>dt_nascimento</name>
+        <rename/>
       </field>
       <field>
         <name>dt_diagnostico_sintoma</name>
+        <rename/>
       </field>
       <field>
         <name>tp_situacao_encerramento</name>
+        <rename/>
       </field>
       <field>
         <name>co_uf_residencia_atual</name>
+        <rename/>
       </field>
       <field>
         <name>co_municipio_residencia_atual</name>
+        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
       <meta>
@@ -1002,7 +1153,7 @@
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>ï»¿dte_id</name>
+        <name>dte_id</name>
         <ascending>Y</ascending>
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>
@@ -1051,7 +1202,7 @@
     <encoding>UTF-8</encoding>
     <fields>
       <field>
-        <name>ï»¿dmun_codibge</name>
+        <name>dmun_codibge</name>
         <type>Integer</type>
         <format>#</format>
         <currency>R$</currency>
@@ -1412,8 +1563,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1024</xloc>
-      <yloc>256</yloc>
+      <xloc>752</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1444,7 +1595,7 @@
     <encoding>UTF-8</encoding>
     <fields>
       <field>
-        <name>ï»¿dte_id</name>
+        <name>dte_id</name>
         <type>Date</type>
         <format>yyyyMMdd</format>
         <currency>R$</currency>
@@ -1754,7 +1905,7 @@
       <field>
         <name>year4</name>
         <type>Number</type>
-        <format>#.#</format>
+        <format>#</format>
         <currency>R$</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1794,7 +1945,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>560</xloc>
+      <xloc>400</xloc>
       <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1836,7 +1987,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1136</xloc>
+      <xloc>1056</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1859,7 +2010,7 @@
       <key>co_municipio_residencia_atual</key>
     </keys_1>
     <keys_2>
-      <key>ï»¿dmun_codibge</key>
+      <key>dmun_codibge</key>
     </keys_2>
     <attributes/>
     <cluster_schema/>
@@ -1870,8 +2021,328 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1264</xloc>
-      <yloc>192</yloc>
+      <xloc>1248</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>dte_id</name>
+        <rename/>
+      </field>
+      <field>
+        <name>month_name</name>
+        <rename/>
+      </field>
+      <field>
+        <name>year4</name>
+        <rename/>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>year4</name>
+        <rename>year</rename>
+        <type>Integer</type>
+        <length>4</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>560</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>dmun_codibge</name>
+        <rename/>
+      </field>
+      <field>
+        <name>dmun_municipio</name>
+        <rename>município</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>976</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filtra Goias</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>Select values 2</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dmun_uf_nomex</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>GOIAS</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>864</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Formata data 2</name>
+    <type>ConcatFields</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <separator> de </separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>N</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding/>
+    <endedLine/>
+    <fileNameInField>N</fileNameInField>
+    <fileNameField/>
+    <create_parent_folder>Y</create_parent_folder>
+    <file>
+      <name/>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery>0</splitevery>
+    </file>
+    <fields>
+      <field>
+        <name>month_name</name>
+        <type>None</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>year</name>
+        <type>None</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <ConcatFields>
+      <targetFieldName>mês</targetFieldName>
+      <targetFieldLength>20</targetFieldLength>
+      <removeSelectedFields>N</removeSelectedFields>
+    </ConcatFields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1360</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 3</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>município</name>
+        <rename/>
+      </field>
+      <field>
+        <name>Mês</name>
+        <rename/>
+      </field>
+      <field>
+        <name>nu_notificacao</name>
+        <rename>Quantidade</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1472</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Text file output</name>
+    <type>TextFileOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding/>
+    <endedLine/>
+    <fileNameInField>N</fileNameInField>
+    <fileNameField/>
+    <create_parent_folder>Y</create_parent_folder>
+    <file>
+      <name>file</name>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>csv</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery/>
+    </file>
+    <fields>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1584</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
